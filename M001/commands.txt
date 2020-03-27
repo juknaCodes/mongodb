@@ -1,0 +1,14 @@
+projections
+
+updateOne
+$set
+$unset
+updateMany
+upsert -> insert if doesn't exist
+
+https://docs.mongodb.com/manual/reference/operator/update/
+replaceOne
+find
+
+deleteOne
+deleteMany

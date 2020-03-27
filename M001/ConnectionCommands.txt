@@ -1,0 +1,10 @@
+
+Compass Url for Scratch
+mongodb+srv://m001-student:Grow%402020@cluster0-yg7wp.mongodb.net/test?authSource=admin&replicaSet=Cluster0-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true
+mongodb://m001-student:m001-mongodb-basics@cluster0-shard-00-00-jxeqq.mongodb.net:27017,cluster0-shard-00-01-jxeqq.mongodb.net:27017,cluster0-shard-00-02-jxeqq.mongodb.net:27017/test?authSource=admin&replicaSet=Cluster0-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true
+
+
+Shell Urls
+mongo "mongodb+srv://cluster0-jxeqq.mongodb.net/test" --username m001-student -password m001-mongodb-basics
+mongo mongodb+srv://cluster0-yg7wp.mongodb.net/test"  --username m001-student -password Grow@2020
+
