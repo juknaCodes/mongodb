@@ -3,9 +3,12 @@ package mflix.api.daos;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
 import com.mongodb.ReadConcern;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.BsonField;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
@@ -28,11 +31,16 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.mongodb.client.model.Accumulators.sum;
+import static com.mongodb.client.model.Aggregates.limit;
+import static com.mongodb.client.model.Aggregates.sort;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.descending;
 import static com.mongodb.client.model.Updates.set;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -154,6 +162,30 @@ public class CommentDao extends AbstractMFlixDao {
         // // guarantee for the returned documents. Once a commenter is in the
         // // top 20 of users, they become a Critic, so mostActive is composed of
         // // Critic objects.
+                /*pipeline.addAll(Arrays.asList(new Document("$group",
+                new Document("_id", "$email")
+                    .append("count",
+                        new Document("$sum", 1L))),
+            new Document("$sort",
+                new Document("count", -1L)),
+            new Document("$limit", 20L)));*/
+        BsonField sum1 = sum("count", 1);
+        // adding both group _id and accumulators
+        Bson groupStage = Aggregates.group("$email", sum1);
+        Bson sortStage = sort(descending("count"));
+        Bson limitStage = limit(20);
+        List<Bson> pipeline = new ArrayList<>();
+
+
+
+        pipeline.add(groupStage);
+        pipeline.add(sortStage);
+        pipeline.add(limitStage);
+        commentCollection.aggregate(Arrays.asList(Aggregates.group("$email",
+            sum("count", 1L)),
+            sort(descending("count")),
+            limit(20)), Critic.class)
+            .into(mostActive);
         return mostActive;
     }
 }
