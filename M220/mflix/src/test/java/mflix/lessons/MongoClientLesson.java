@@ -29,7 +29,7 @@ public class MongoClientLesson extends AbstractLesson {
 
   private MongoCollection<Document> collection;
 
-  private String uri = "mongodb+srv://m220student:m220password@cluster0-hoquy.mongodb.ne";
+  private String uri = "mongodb+srv://m220student:m220password@cluster0-hoquy.mongodb.net/sample_mflix?maxPoolSize=50&connectTimeoutMS=2000";
 
   private Document document;
 
